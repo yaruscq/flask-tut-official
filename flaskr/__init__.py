@@ -51,7 +51,7 @@ def create_app(test_config=None):  # an app factory func
 
     @app.route('/hello')
     def hello():
-        return 'Hello World!'
+        return 'Hello World, QQ!'
     
 
     from . import db
