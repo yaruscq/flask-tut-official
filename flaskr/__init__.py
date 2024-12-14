@@ -18,18 +18,40 @@ def create_app(test_config=None):  # an app factory func
     # 或是自行定義 instance path: 
     # Path to flaskr directory
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    print(current_dir)
+    print(f"Current_dir is {current_dir}")
     # 與 flaskr 同層
     # instance_path=os.path.join(current_dir, '..', 'cq', 'miko')
     
     # 在 flaskr folder 之下
-    instance_path = os.path.join(current_dir, '..', 'flaskr', 'cq')
+    # instance_path = os.path.join(current_dir, '..', 'flaskr', 'cq')
+    instance_path = os.path.join(current_dir, 'cq')
 
     app = Flask(__name__, instance_path=os.path.abspath(instance_path))
+    print(f"Instance path: {app.instance_path}")
+    
     app.config.from_mapping(
-        SECRET_KEY='secerts',
+        SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite') 
     )
+    
+    # config_file = os.path.join(app.instance_path, 'config.py')
+    # print(f"Config file exists: {os.path.exists(config_file)}")
+    # Verify the config file location
+    config_path = os.path.join(app.instance_path, 'config.py')
+    print(f"Config file exists: {os.path.exists(config_path)}")
+
+    try:
+        app.config.from_pyfile(config_path, silent=False)
+    except Exception as e:
+        print(f"Error loading config file: {e}")
+
+    print(f"Loaded SECRET_KEY: {app.config['SECRET_KEY']}")
+
+    # from flask import current_app
+    # with app.app_context():
+    #     # Load the instance config, if it exists, when not testing
+        
+    #     print(current_app.config['SECRET_KEY'])
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
