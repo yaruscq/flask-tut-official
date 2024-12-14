@@ -40,12 +40,12 @@ def create_app(test_config=None):  # an app factory func
     config_path = os.path.join(app.instance_path, 'config.py')
     print(f"Config file exists: {os.path.exists(config_path)}")
 
-    try:
-        app.config.from_pyfile(config_path, silent=False)
-    except Exception as e:
-        print(f"Error loading config file: {e}")
+    # try:
+    #     app.config.from_pyfile(config_path, silent=False)
+    # except Exception as e:
+    #     print(f"Error loading config file: {e}")
 
-    print(f"Loaded SECRET_KEY: {app.config['SECRET_KEY']}")
+    # print(f"Loaded SECRET_KEY: {app.config['SECRET_KEY']}")
 
     # from flask import current_app
     # with app.app_context():
@@ -55,7 +55,8 @@ def create_app(test_config=None):  # an app factory func
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
+        app.config.from_pyfile(config_path, silent=True)
+        print(f"Loaded SECRET_KEY: {app.config['SECRET_KEY']}")
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
